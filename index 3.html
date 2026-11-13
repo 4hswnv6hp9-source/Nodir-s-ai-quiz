@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fundamentals of AI – Quiz</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--text:#1f2328;--muted:#6b7280;--line:#d8dce1;--accent:#2f5fd0;--ok:#1a7f45;--okbg:#e3f5ea;--bad:#c62828;--badbg:#fdeaea}
+@media (prefers-color-scheme:dark){:root{--bg:#15171a;--card:#1f2226;--text:#e8eaed;--muted:#9aa0a6;--line:#3a3f45;--accent:#7ea2ff;--ok:#6fd49a;--okbg:#17321f;--bad:#ff8a80;--badbg:#3a1c1c}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px;padding-top:max(16px,env(safe-area-inset-top,0px));padding-bottom:max(24px,env(safe-area-inset-bottom,0px))}
+main{max-width:720px;margin:0 auto}
+h1{font-size:1.35rem;margin:0 0 4px}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 14px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:8px}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 16px;font:inherit;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.wk{font-size:1.1rem;font-weight:600;margin:10px 0 4px}
+.bar{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.9rem;margin-bottom:12px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.qt{font-weight:600;margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:transparent;color:var(--text);border-radius:8px;padding:10px 12px;margin-top:8px;font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default;opacity:1}
+.opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.fb{margin:10px 0 0;font-size:.9rem;font-weight:600}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.btn{border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.res{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+.res b{font-size:1.4rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Fundamentals of AI</h1>
+<p class="sub">Haftani tanlang, javobni bosing – to’g’ri yoki xato darhol ko’rinadi.</p>
+<div class="tabs" id="tabs" role="tablist"></div>
+<div id="wk" class="wk"></div>
+<div class="bar"><span id="score"></span><button class="btn ghost" id="reset">Qaytadan</button></div>
+<div id="qs"></div>
+<div id="res"></div>
+</main>
+<script>
+var W=[
+{t:"The AI Tools Landscape",q:[
+["Why do you send exactly the same prompt to all three tools when comparing them?",["To save time","So that differences in results come from the tool, not from the wording","Because tools only accept copied text","To avoid the free limit"],1],
+["Which of these is NOT one of the 5 comparison criteria?",["Accuracy","Completeness","Price","Usefulness"],2],
+["What is the maximum total score a tool can get in the comparison table?",["5","10","20","25"],3],
+["What is the purpose of the “Find the error” task?",["To build the habit of checking AI answers against an official source","To prove that AI is always wrong","To test internet speed","To practise translation"],0],
+["If the AI gives a wrong answer, what does the seminar suggest you ask?",["“Delete your answer”","“Answer faster”","“Show me your source”","“Are you a robot?”"],2],
+["Asking the best tool to “make this shorter and more precise” is an example of:",["Hallucination","Iteration","Translation","Compression"],1],
+["What is an Artifact in Claude?",["A paid subscription plan","A browser extension","A security warning","A standalone output (table, quiz, calculator) that opens beside the chat and can be changed with follow-up requests"],3],
+["How is Portfolio entry #1 treated?",["Submitted as practice, not graded","Worth 1 point","Optional","Presented orally"],0]]},
+{t:"Prompting",q:[
+["Which prompt is likely to give the best result?",["“Tell me about marketing.”","“Write something good about marketing.”","“Explain 3 marketing channels to a first-year business student, as a table: channel – definition – example.”","“Marketing, please.”"],2],
+["What is few-shot prompting?",["Including examples of the desired output in the prompt","Sending the prompt several times","Writing a very short prompt","Asking the AI to guess"],0],
+["Writing “as a table: term – definition – example” specifies the:",["Audience","Tone","Role","Output format"],3],
+["The first answer is too long. What is the best next step?",["Start a new chat","Reply with a follow-up: “Shorten to 100 words, keep the key points”","Switch off the internet","Accept it"],1],
+["Which element of a prompt tells the AI who the answer is for?",["Output format","Audience","Length","Example"],1],
+["What is a zero-shot prompt?",["A prompt with zero words","A prompt on which the AI scores zero","A prompt with instructions but no examples","A prompt sent twice"],2],
+["Why add constraints such as length and tone?",["To reduce generic, off-target answers","To make the AI slower","To hide that AI was used","Because the tool requires it"],0],
+["Why does “Write a business plan” give 15 pages of generic text?",["The model is broken","The free limit was reached","The prompt has too many words","The prompt lacks specifics (industry, audience, length, format)"],3]]},
+{t:"Verification",q:[
+["What is a hallucination?",["A slow response","Confident-sounding output that is false or invented","A formatting error","A security breach"],1],
+["The AI gives precise 2024 tourism statistics with no source. What should you do?",["Trust it because the numbers are specific","Ask “Are you sure?” and accept the reply","Delete the chat","Check the numbers against an official source"],3],
+["Which kinds of claims most need checking?",["Specific numbers, dates, names and citations","Greetings","Formatting","Synonyms"],0],
+["Asking the same AI “Are you sure?” is:",["Proof of accuracy","A guarantee","Not reliable verification, since it may repeat or change the answer without evidence","Required by the course"],2],
+["The AI cites a journal article. What should you do?",["Copy it into your essay","Trust it if the format looks right","Trust it if it is recent","Verify that the article really exists (search the title or DOI)"],3],
+["What is lateral reading?",["Reading faster","Checking what independent sources say about a claim","Reading text sideways","Reading in another language"],1],
+["Best source for a university’s founding date?",["A social media comment","Another AI tool","The university’s official website","A random blog"],2],
+["For high-stakes content (medical, legal, financial), what is needed?",["Review by a qualified human expert","Full trust in the AI","A free tool","A shorter answer"],0]]},
+{t:"Model Selection, Configuration and Projects",q:[
+["What is the purpose of a Project?",["To delete old chats","To translate files","To speed up the internet","To keep related chats, instructions and reference files together"],3],
+["What are custom instructions?",["A one-time deletion tool","Standing preferences (tone, language, format) applied to your conversations","A paid model","A way to hide history"],1],
+["A larger, more capable model is best for:",["Complex, multi-step reasoning and analysis","Saying hello","Counting letters","Nothing in particular"],0],
+["What is a context window?",["The screen size","The number of chats you have","The amount of text the model can consider at once","The length of a password"],2],
+["Why upload course notes to a Project?",["It makes the AI free","It grounds answers in your own material","It removes the need to write prompts","It guarantees no errors"],1],
+["Web search is most useful when:",["Writing a poem","Translating one word","Formatting a table","The question needs current information"],3],
+["The free limit is running out fast. What helps?",["Use shorter requests and a lighter model for simple tasks","Add more files","Write longer prompts","Open more tabs"],0],
+["What makes a fair comparison of tools?",["A different prompt for each tool","Choosing by brand","An identical prompt scored on the same criteria","Asking each tool which is best"],2]]},
+{t:"Workflows",q:[
+["What is prompt chaining?",["The output of one step becomes the input of the next","One very long prompt","Sending a prompt to many tools","Repeating the same prompt"],0],
+["What is the benefit of breaking a big task into steps?",["It is always faster","It removes the need for a human","Each step is easier to check and correct","It uses less data"],2],
+["Where should human review checkpoints go?",["Only at the end","After steps where an error would spread into later steps","Nowhere","Only at the start"],1],
+["What is the best first step when designing a workflow?",["Choose a tool","Write the longest prompt","Upload everything","Define the goal and the final deliverable"],3],
+["Why use a reusable prompt template?",["It saves time and keeps results consistent for repeated tasks","It makes the AI smarter","It avoids verification","It is required by law"],0],
+["In the workflow “data → AI draft → ___ → send”, which step is missing?",["Delete the data","Send again","Human verification of numbers and claims","Ask the AI to approve itself"],2],
+["What is the main risk of automating without checks?",["Lower cost","Errors are repeated and spread unnoticed","More creativity","No risk"],1],
+["Good workflow documentation should:",["Be secret","Contain only the final result","Be written by the AI alone","Record steps, prompts and checks so others can repeat it"],3]]},
+{t:"Responsible Use, Troubleshooting",q:[
+["A student uploads the university’s public annual report to get a summary. Decision?",["Not allowed","Allowed only if anonymised","Allowed, because it is public data","Allowed only on a paid plan"],2],
+["A table has 5 employees’ names, passport numbers and salaries, and you want the errors found. Decision?",["Upload it as it is","Allowed with changes: remove or anonymise names and passport numbers","Upload it on a friend’s account","No need to change anything"],1],
+["A configuration file contains internal API keys. What should you do?",["Remove the keys and secrets before sharing, and never upload credentials","Upload it, since keys are short","Upload it at night","Ask the AI to hide them"],0],
+["A marketer wants to analyse an unannounced product plan on a personal free account. Decision?",["Allowed","Allowed if the file is short","Allowed if no names appear","Not allowed: it is confidential, so use an approved tool or do not share it"],3],
+["At message 35 the AI forgot the table format and switched language. Where is the cause?",["Data","Model","Context (the conversation is too long)","Spelling"],2],
+["You upload an 80-page PDF and the summary covers only the first 10 pages. Best fix?",["Repeat the same request louder","Split it into sections, summarise each, then combine","Rename the file","Switch to another language"],1],
+["“Fix this code” made the AI change the program’s behaviour. What should you do?",["Say what the code should do and ask for a minimal change","Ask it to try harder","Delete the file","Upload it again unchanged"],0],
+["What is an AI declaration?",["A legal contract","A password","A list of banned tools","A 3-sentence statement at the end of each portfolio entry saying which tools you used, for what, and how you verified"],3]]}
+];
+var L=["A","B","C","D"],cur=0,state=W.map(function(w){return w.q.map(function(){return -1})});
+var $=function(id){return document.getElementById(id)};
+function tabs(){var h="";W.forEach(function(w,i){h+='<button class="tab" role="tab" aria-selected="'+(i===cur)+'" data-i="'+i+'">Week '+(i+1)+'</button>'});$("tabs").innerHTML=h;
+Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){b.onclick=function(){cur=+b.dataset.i;render()}})}
+function render(){tabs();var w=W[cur],st=state[cur];$("wk").textContent="Week "+(cur+1)+" – "+w.t;
+var h="";w.q.forEach(function(q,qi){var a=st[qi],done=a>-1;h+='<div class="q"><p class="qt">'+(qi+1)+". "+q[0]+"</p>";
+q[1].forEach(function(o,oi){var c="opt";if(done){if(oi===q[2])c+=" ok";else if(oi===a)c+=" bad"}
+h+='<button class="'+c+'" '+(done?"disabled":"")+' data-q="'+qi+'" data-o="'+oi+'"><b>'+L[oi]+")</b> "+o+"</button>"});
+if(done)h+=a===q[2]?'<p class="fb ok">✓ To’g’ri!</p>':'<p class="fb bad">✗ Xato. To’g’ri javob: '+L[q[2]]+"</p>";
+h+="</div>"});$("qs").innerHTML=h;
+Array.prototype.forEach.call(document.querySelectorAll(".opt"),function(b){b.onclick=function(){state[cur][+b.dataset.q]=+b.dataset.o;render()}});
+var ans=st.filter(function(x){return x>-1}).length,ok=st.filter(function(x,i){return x===w.q[i][2]}).length;
+$("score").textContent="To’g’ri: "+ok+" / "+w.q.length+" · Javob berilgan: "+ans;
+$("res").innerHTML=ans===w.q.length?'<div class="res"><b>'+ok+" / "+w.q.length+"</b><p>"+(ok===w.q.length?"Ajoyib! Hammasi to’g’ri.":ok>=6?"Yaxshi natija!":"Yana bir bor urinib ko’ring.")+"</p></div>":""}
+$("reset").onclick=function(){state[cur]=W[cur].q.map(function(){return -1});render();window.scrollTo(0,0)};
+render();
+</script>
+</body>
+</html>
